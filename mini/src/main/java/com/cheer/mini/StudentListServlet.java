@@ -14,6 +14,10 @@ import javax.servlet.http.HttpServletResponse;
 public class StudentListServlet extends HttpServlet {
 	
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public static List<Student> store = new ArrayList<Student>();
 	
 	@Override
