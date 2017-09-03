@@ -16,6 +16,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.cheer.mini.Student;
 
+@SuppressWarnings("unused")
 public class DataBaseUtil {
 	
 	private static transient Log log = LogFactory.getLog(DataBaseUtil.class);
@@ -38,7 +39,8 @@ public class DataBaseUtil {
 			conn = DriverManager.getConnection(
 					jdbcUrl, user, password);
 			conn.setAutoCommit(false);
-			Savepoint setSavepoint = conn.setSavepoint();
+			//conn.setSavepoint();
+			stmt = conn.createStatement();
 			rt = jdbcOperator.callback(stmt);
 			conn.commit();
 		}catch(SQLException e){

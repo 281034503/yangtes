@@ -1,19 +1,20 @@
 package com.cheer.mini;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class StudentListServlet extends HttpServlet {
-	
-	
+import com.cheer.mini.util.DataBaseUtil;
+import com.cheer.mini.util.RowMapper;
+
+public class StudentListServlet extends HttpServlet {	
 	/**
 	 * 
 	 */
@@ -23,6 +24,24 @@ public class StudentListServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
+		List<Student> store = DataBaseUtil.query("select * from sys_student", new RowMapper<Student>(){
+			@Override
+			public Student mapper(ResultSet rs) throws SQLException{
+				Student student = new Student();
+				student.setId(rs.getString(1));
+				student.setName(rs.getString(2));
+				student.setAge(rs.getInt(3));
+				student.setHeigth(rs.getInt(4));
+				student.setWeight(rs.getInt(5));
+				return student;
+			}
+		});
+		req.setAttribute("store", store);
+		
+		req.getRequestDispatcher("/student/list.jsp").forward(req, resp);
+		
+		/**
+		resp.setContentType("text/html");
 		PrintWriter out = resp.getWriter();
 		out.println("<!DOCTYPE html>");
 		out.println("<html lang=\"en\">");
@@ -113,7 +132,9 @@ public class StudentListServlet extends HttpServlet {
 		out.println("</html>");
 		out.flush();
 	}
-
+**/
+		
+	/**	
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
@@ -157,7 +178,7 @@ public class StudentListServlet extends HttpServlet {
 			store.add(student);
 		}
 		
-		
+	**/	
 		
 	}
 	
