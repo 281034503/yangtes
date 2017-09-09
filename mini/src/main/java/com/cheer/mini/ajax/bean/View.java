@@ -3,7 +3,7 @@ package com.cheer.mini.ajax.bean;
 import java.io.Serializable;
 import java.util.List;
 
-public class View<T> implements Serializable{
+public abstract class View<T> implements Serializable{
 
 	/**
 	 * 

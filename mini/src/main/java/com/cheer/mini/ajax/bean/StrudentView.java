@@ -1,6 +1,6 @@
 package com.cheer.mini.ajax.bean;
 
-public class StrudentView<T> extends View {
+public class StrudentView<Student> extends View<Student> {
 
 	/**
 	 * 

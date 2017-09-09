@@ -64,8 +64,8 @@ public class DataBaseUtil {
 		}
 		return rt;
 	}
-		
-	public static <T> List<T> query(String querySql,RowMapper<Student> rowMapper){
+	
+	public static <T> List<T> query(String querySql,RowMapper<T> rowMapper){
 		Properties configuration = 
 				PropertiesUtil.getProperties("jdbc");
 		try{
@@ -84,7 +84,7 @@ public class DataBaseUtil {
 			ResultSet rs = conn.createStatement().executeQuery(querySql);
 			List<T> rt = new ArrayList<T>();
 			while(rs.next()){
-				T t = (T) rowMapper.mapper(rs);
+				T t = rowMapper.mapper(rs);
 				rt.add(t);
 			}
 			return rt;
@@ -104,4 +104,56 @@ public class DataBaseUtil {
 		}
 		return null;
 	}
+		
+	public static int getCount(String querySql){
+		Properties configuration = 
+				PropertiesUtil.getProperties("jdbc");
+		try{
+			Class.forName(configuration.getProperty("jdbc.class.driver"));
+		}catch(ClassNotFoundException e){
+			System.err.println(e.getMessage());
+		}
+		String jdbcUrl = configuration.getProperty("jdbc.url");
+		String user = configuration.getProperty("jdbc.user");
+		String password = configuration.getProperty("jdbc.password");
+		Connection conn = null;
+		PreparedStatement ps = null;
+		try{
+			conn = DriverManager.getConnection(
+					jdbcUrl, user, password);
+			StringBuffer sb = new StringBuffer(512);
+			sb.append("select count(1) from(").append(querySql).append(")a");
+			
+			ResultSet rs = conn.createStatement().executeQuery(sb.toString());
+			while (rs.next()) {
+				int count=rs.getInt(1);
+				return count;
+			}
+			return 0;
+			
+			//return rt;
+		}catch(SQLException e){
+			log.error(e.getMessage());
+		}finally{
+			try{
+				if(ps!=null){
+					ps.close();
+				}
+				if(conn!=null){
+					conn.close();
+				}
+			}catch(SQLException e){
+				log.error(e.getMessage());
+			}
+		}
+		return -1;
+	}
+	
+	public static <T> List<T> pageQuery(String querySql,int pageNo,int pageSize,RowMapper<T> rowMapper){
+		StringBuffer sb = new StringBuffer(512);
+		int begin = pageSize * (pageNo -1);
+		sb.append(querySql).append(" limit ").append(begin).append(",").append(pageSize);
+		return query(sb.toString(),rowMapper);
+	}
+	
 }
