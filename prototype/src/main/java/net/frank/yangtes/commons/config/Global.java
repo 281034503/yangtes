@@ -12,57 +12,57 @@ import net.frank.yangtes.commons.utils.PropertiesLoader;
 import net.frank.yangtes.commons.utils.StringUtils;
 
 /**
- * 全局配置类
+ * 鍏ㄥ眬閰嶇疆绫�
  */
 public class Global {
 
 	/**
-	 * 当前对象实例
+	 * 褰撳墠瀵硅薄瀹炰緥
 	 */
 	private static Global global = new Global();
 	
 	/**
-	 * 保存全局属性值
+	 * 淇濆瓨鍏ㄥ眬灞炴�у��
 	 */
 	private static Map<String, String> map = Maps.newHashMap();
 	
 	/**
-	 * 属性文件加载对象
+	 * 灞炴�ф枃浠跺姞杞藉璞�
 	 */
 	private static PropertiesLoader loader = new PropertiesLoader("yangtes.properties");
 
 	/**
-	 * 显示/隐藏
+	 * 鏄剧ず/闅愯棌
 	 */
 	public static final String SHOW = "1";
 	public static final String HIDE = "0";
 
 	/**
-	 * 是/否
+	 * 鏄�/鍚�
 	 */
 	public static final String YES = "1";
 	public static final String NO = "0";
 	
 	/**
-	 * 对/错
+	 * 瀵�/閿�
 	 */
 	public static final String TRUE = "true";
 	public static final String FALSE = "false";
 	
 	/**
-	 * 上传文件基础虚拟路径
+	 * 涓婁紶鏂囦欢鍩虹铏氭嫙璺緞
 	 */
 	public static final String USERFILES_BASE_URL = "/userfiles/";
 	
 	/**
-	 * 获取当前对象实例
+	 * 鑾峰彇褰撳墠瀵硅薄瀹炰緥
 	 */
 	public static Global getInstance() {
 		return global;
 	}
 	
 	/**
-	 * 获取配置
+	 * 鑾峰彇閰嶇疆
 	 * @see ${fns:getConfig('adminPath')}
 	 */
 	public static String getConfig(String key) {
@@ -75,36 +75,36 @@ public class Global {
 	}
 	
 	/**
-	 * 获取管理端根路径
+	 * 鑾峰彇绠＄悊绔牴璺緞
 	 */
 	public static String getAdminPath() {
 		return getConfig("adminPath");
 	}
 	
 	/**
-	 * 获取前端根路径
+	 * 鑾峰彇鍓嶇鏍硅矾寰�
 	 */
 	public static String getFrontPath() {
 		return getConfig("frontPath");
 	}
 	
 	/**
-	 * 获取URL后缀
+	 * 鑾峰彇URL鍚庣紑
 	 */
 	public static String getUrlSuffix() {
 		return getConfig("urlSuffix");
 	}
 	
 	/**
-	 * 是否是演示模式，演示模式下不能修改用户、角色、密码、菜单、授权
+	 * 鏄惁鏄紨绀烘ā寮忥紝婕旂ず妯″紡涓嬩笉鑳戒慨鏀圭敤鎴枫�佽鑹层�佸瘑鐮併�佽彍鍗曘�佹巿鏉�
 	 */
 	public static Boolean isDemoMode() {
 		String dm = getConfig("demoMode");
-		return "true".equals(dm) || "1".equals(dm);
+		return "true".equals(dm) || "1".equals(dm);//
 	}
 	
 	/**
-	 * 在修改系统用户和角色时是否同步到Activiti
+	 * 鍦ㄤ慨鏀圭郴缁熺敤鎴峰拰瑙掕壊鏃舵槸鍚﹀悓姝ュ埌Activiti
 	 */
 	public static Boolean isSynActivitiIndetity() {
 		String dm = getConfig("activiti.isSynActivitiIndetity");
@@ -112,20 +112,20 @@ public class Global {
 	}
     
 	/**
-	 * 页面获取常量
+	 * 椤甸潰鑾峰彇甯搁噺
 	 * @see ${fns:getConst('YES')}
 	 */
 	public static Object getConst(String field) {
 		try {
 			return Global.class.getField(field).get(null);
 		} catch (Exception e) {
-			// 异常代表无配置，这里什么也不做
+			// 寮傚父浠ｈ〃鏃犻厤缃紝杩欓噷浠�涔堜篃涓嶅仛
 		}
 		return null;
 	}
 
 	/**
-	 * 获取上传文件的根目录
+	 * 鑾峰彇涓婁紶鏂囦欢鐨勬牴鐩綍
 	 * @return
 	 */
 	public static String getUserfilesBaseDir() {
@@ -145,11 +145,11 @@ public class Global {
 	}
 	
     /**
-     * 获取工程路径
+     * 鑾峰彇宸ョ▼璺緞
      * @return
      */
     public static String getProjectPath(){
-    	// 如果配置了工程路径，则直接返回，否则自动获取。
+    	// 濡傛灉閰嶇疆浜嗗伐绋嬭矾寰勶紝鍒欑洿鎺ヨ繑鍥烇紝鍚﹀垯鑷姩鑾峰彇銆�
 		String projectPath = Global.getConfig("projectPath");
 		if (StringUtils.isNotBlank(projectPath)){
 			return projectPath;
