@@ -31,22 +31,23 @@
 		<context:exclude-filter type="annotation"
 			expression="org.springframework.stereotype.Controller" />
 	</context:component-scan>
-	
-	
+
+
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-	    <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
-        <property name="basePackage" value="net.frank.yangtes.modules.sys.dao;net.frank.yangtes.modules.gen.dao" />
-        <property name="annotationClass"
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+		<property name="basePackage"
+			value="net.frank.yangtes.modules.sys.dao;net.frank.yangtes.modules.gen.dao;com.cheer.assets.mapper" />
+		<property name="annotationClass"
 			value="net.frank.yangtes.commons.persistence.annotation.MyBatisDao" />
-    </bean>
-    <!-- Define the SqlSessionFactory -->
-    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="dataSource"/>
-        <property name="typeAliasesPackage" value="net.frank.yangtes" />
+	</bean>
+	<!-- Define the SqlSessionFactory -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="typeAliasesPackage" value="net.frank.yangtes" />
 		<property name="typeAliasesSuperType"
 			value="net.frank.yangtes.commons.persistence.BaseEntity" />
-        <property name="configLocation" value="classpath:/mybatis-config.xml" />
-    </bean>
+		<property name="configLocation" value="classpath:/mybatis-config.xml" />
+	</bean>
 
 	<!-- 定义事务 -->
 	<bean id="transactionManager"
