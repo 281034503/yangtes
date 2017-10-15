@@ -17,6 +17,157 @@
 			$("#searchForm").attr("action", "${ctx}/assets/form");
 			$("#searchForm").submit();
 		}
+		$(function() {
+			$(".btnStatusNormal").click(function() {
+				var assetsId = $(this).attr("data");
+				console.log(assetsId);
+				var requestBody = {
+					"assetsId" : assetsId
+				};
+				$.ajax({
+					type : "post",
+					url : "${ctx}/assets/status/normal",
+					contextType : "json",
+					data : requestBody,
+					dataType : "json",
+					success : function(response) {
+						$("#searchForm").submit();
+					},
+					error : function(e) {
+						console.log(e)
+					}
+				});
+			});
+
+			$(".btnDepreciation").click(function() {
+				var assetsId = $(this).attr("data");
+				console.log(assetsId);
+				var requestBody = {
+					"assetsId" : assetsId,
+					"deratingValue" : 0
+				};
+				var d = top.dialog({
+					title : '折旧',
+					url : '${ctx}/assets/dialog/derating',
+					height : 60,
+					width : 180,
+					okValue : '确定',
+					ok : function() {
+						var iframeWindow = this.iframeNode.contentWindow;
+						var deratingVal = iframeWindow.document.getElementById("deratingValue").value;
+						if (deratingVal != null
+								&& deratingVal != ""
+								&& deratingVal != "0") {
+							requestBody.deratingValue = deratingVal;
+							$.ajax({
+								type:"post",
+								url:"${ctx}/assets/finance/derating",
+								contextType:"json",
+								data : requestBody,
+								dataType: "json", 
+								success: function(response){
+									alert("资产折旧成功");
+								},
+								error : function(e){
+									console.log(e)
+								}
+							});
+						} else {
+							top.alert("折旧值不能为空或0!");
+						}
+						return false;
+					},
+					cancelValue : '取消',
+					cancel : function() {
+					}
+				});
+				d.showModal();
+			});
+			
+			$(".btnBorrow").click(function() {
+				var assetsId = $(this).attr("data");
+				console.log(assetsId);
+				var requestBody = {
+					"assetsId" : assetsId,
+					"dutyId" : null
+				};
+				var url = '${ctx}/tag/treeselect?url=' + encodeURIComponent("/sys/office/treeData?type=3");
+				var d = top.dialog({
+					title : '借出',
+					url : url,
+					height : 250,
+					width : 400,
+					okValue : '确定',
+					ok : function() {
+						var iframeWindow = this.iframeNode.contentWindow;
+						var tree = iframeWindow.tree;
+						var nodes = [];
+						nodes = tree.getSelectedNodes();
+						if(nodes != null && nodes.length>0){
+							var node = null;
+							for (var i = 0; i < nodes.length; i++) {
+								if (nodes[i].level == 0) {
+									top.alert("不能选择根节点（" + nodes[i].name + "）请重新选择。");
+									return false;
+								}
+								if (nodes[i].isParent) {
+									top.alert("不能选择父节点（" + nodes[i].name + "）请重新选择。");
+									return false;
+								}
+								node = nodes[i];
+			                    break; // 如果为非复选框选择，则返回第一个选择
+			                }
+							if(node!=null){
+								requestBody.dutyId = node.id.substring(2);
+								$.ajax({
+									type:"post",
+									url:"${ctx}/assets/borrow",
+									contextType:"json",
+									data : requestBody,
+									dataType: "json", 
+									success: function(response){
+										alert("资产借出成功");
+										$("#searchForm").submit();
+									},
+									error : function(e){
+										console.log(e)
+									}
+								});
+							}
+						}else{
+							return false;
+						}
+					},
+					cancelValue : '取消',
+					cancel : function() {
+					}
+				});
+				d.showModal();
+				
+			});
+
+			$(".btnStatusDis").click(function() {
+				var assetsId = $(this).attr("data");
+				console.log(assetsId);
+				var requestBody = {
+					"assetsId" : assetsId
+				};
+				$.ajax({
+					type : "post",
+					url : "${ctx}/assets/status/disabled",
+					contextType : "json",
+					data : requestBody,
+					dataType : "json",
+					success : function(response) {
+						console.log(assetsId);
+						$("#searchForm").submit();
+					},
+					error : function(e) {
+						console.log(e)
+					}
+				});
+			});
+		});
 	</script>
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="${ctx}/assets">资产品表</a></li>
@@ -53,7 +204,16 @@
 							<td>${assets.sellPrice}</td>
 							<td><fmt:formatDate value="${assets.sellDate}"
 									pattern="yyyy-MM-dd" /></td>
-							<td>&nbsp;</td>
+							<td><c:if test="${'P' eq assets.status}">
+									<a href="#" data="${assets.id}" class="btnStatusNormal">采购入库</a>
+								</c:if> <c:if test="${'N' eq assets.status}">
+									<a href="#" data="${assets.id}" class="btnDepreciation">折旧...</a>
+									<c:if test="${empty assets.dutyBy}">
+									&nbsp;<a href="#" data="${assets.id}" class="btnBorrow">借用...</a>
+									</c:if>
+									&nbsp;<a href="#" data="${assets.id}" class="btnStatusDis">报废</a>
+								</c:if>
+								&nbsp;<a href="${ctx}/assets/category/details">详情</a></td>
 						</tr>
 					</c:forEach>
 				</c:if>
