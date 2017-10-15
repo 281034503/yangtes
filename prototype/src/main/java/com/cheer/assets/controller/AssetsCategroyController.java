@@ -65,7 +65,6 @@ public class AssetsCategroyController extends BaseController {
 	
 	@RequestMapping(value="save")
 	public String save(AssetsCategroyEntity entity,Model model) {
-		
 		logger.debug("InputParam[entity]->"+entity);
 		AssetsCategroyEntity parent=service.get(entity.getParentId());
 		service.save(entity,parent , UserUtils.getUser().getId());
