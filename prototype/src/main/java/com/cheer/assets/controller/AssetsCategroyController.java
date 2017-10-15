@@ -63,19 +63,20 @@ public class AssetsCategroyController extends BaseController {
 		return "modules/assets/category/form";
 	}
 
-	@RequestMapping(value = "save")
-	public String save(AssetsCategroyEntity entity, Model model) {
-		logger.debug("InputParam[entity]->" + entity);
-		AssetsCategroyEntity parent = service.get(entity.getParentId());
-		service.save(entity, parent, UserUtils.getUser().getId());
-		model.addAttribute("message", "操作成功");
+	
+	@RequestMapping(value="save")
+	public String save(AssetsCategroyEntity entity,Model model) {
+		logger.debug("InputParam[entity]->"+entity);
+		AssetsCategroyEntity parent=service.get(entity.getParentId());
+		service.save(entity,parent , UserUtils.getUser().getId());
+		model.addAttribute("message","鎿嶄綔鎴愬姛");
 		return list(model);
 	}
 
 	@RequestMapping(value = "delete")
 	public String delete(String id, Model model) {
 		logger.debug("InputParam[id]->" + id);
-		model.addAttribute("message", "操作成功");
+		model.addAttribute("message", "鎿嶄綔鎴愬姛");
 		return list(model);
 	}
 
