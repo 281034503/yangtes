@@ -424,7 +424,7 @@
 				<app.log.dir>/home/guochen/taishan/project/logs</app.log.dir>
 				<app.ehcache.dir>/home/guochen/taishan/project/ehcache</app.ehcache.dir>
 				<database.jdbc.driver>com.mysql.jdbc.Driver</database.jdbc.driver>
-				<database.jdbc.url><![CDATA[rm-uf65vj6gv77pyiy25o.mysql.rds.aliyuncs.com:3306/prototype_gc?useUnicode=true&amp;amp;characterEncoding=utf8]]></database.jdbc.url>
+				<database.jdbc.url><![CDATA[jdbc:mysql://rm-uf65vj6gv77pyiy25o.mysql.rds.aliyuncs.com:3306/prototype_gc?useUnicode=true&amp;amp;characterEncoding=utf8]]></database.jdbc.url>
 				<database.jdbc.name>guochen</database.jdbc.name>
 				<database.jdbc.password>12345678</database.jdbc.password>
 			</properties>
